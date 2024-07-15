@@ -1,0 +1,59 @@
+======> SQL
+------> Cosas por utilizar
+
+- NoCount
+	Evita contar el numero de celdas afectadas, obtenidas
+- Transacciones
+	
+	Se encarga de verificar que todas las acciones se hayan ejecutado correctamente, de ser todo correcto realiza un commit (guarda/actualiza; en general realiza lo que queremos hacer), cuando hay algun error se se realiza un roll back (regrese al estado inicial a como si no se hubiera realizado ningun )
+
+- @@TRANCOUNT
+	
+	-- NOTA:
+	Investigar como cambia esta propieda al realizar esta accion
+		ROLLBACK TRANSACTION nombre_de_punto_de_retorno
+	La cual es mencionada en la documentación directa de esta propiedad sql
+	-- FIN NOTA
+
+	Esta anotación crea se encarga de llevar un control de las transacciones, al parecer lleva un control de cuando estas inician en especifico cuando se realiza el begin 
+		Esto aumenta la variable en 1
+	cuando se termina con COMMIT ó WORK (ambas inician con TRANSACTION) la transaccion entonces la variable se disminuye en 1
+	El ROLLBACK de la transacción también disminuye en 1 la variable
+
+	El commit va cerrando una a una
+	A diferencia del ROLLBACK que este cierra todas las transacciones
+
+- XACT_ABORT
+
+	Se encarga de cancelar una transaccion si se encuentra un error de compilacion (??un error logico entra en los errores de compilacion, como puede ser el acceso a un dato inexistente??
+	?? un error de sintaxis como puede entrar en una transaccion??
+	)
+
+	Se encarga de cortar acciones en una transaccion, si esta opcion esta activada la transaccion al encontrar un error (en el caso del ejemplo se trato de agregar una fk que no existia) no se realiza la transaccion
+
+	Ayuda a realizar un ROLLBACK en automatico cuando hay un error, si no se activa el ROLLBACK debe estar indicado.
+
+- XACT_STATE
+
+	Se utiliza para saber si hay transacciones en proceso, esta variable puede tener 3 
+		1
+		0
+		-1
+	1: Indica que hay una transaccion en proceso que puede ser COMMIT commiteada, este tipo de transacciones (no entendi por que se puede hacer commit de esto si de por si esta indicando un error)
+	0: indica que no hay ninguna transaccion abierta
+	-1: Indica una transacion(s) abierta pero no puede ser COMMIT commiteada y obligadamente debe realizarce un ROLLBACK
+
+	Esta funcion es utiliza para debug al igual que @@TRANCOUNT
+
+- ANSI_WARNINGS
+	Revisar bien
+	No entendi, pero puede cancelar instrucciones de tipo numericas, si hay errores aritmeticos puede cancelar 
+
+	Luego de explicacio de chatgpt
+
+	Si hay valores nulos
+		Por ejemplo 1 + null
+	Si esta funcion esta activada, daria error
+
+	Igualmente si existe una convercion de datos que puede provocar perdida de datos se dara error
+
